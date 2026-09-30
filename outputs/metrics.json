@@ -1,0 +1,158 @@
+{
+  "setup": {
+    "users_train": 40591,
+    "users_test": 36610,
+    "churn_definition": "no order in any vertical in the 28 days after cutoff",
+    "train_cutoff_day": 90,
+    "test_cutoff_day": 120,
+    "action_costs_aed": {
+      "control": 0,
+      "discount": 15,
+      "service_recovery": 10,
+      "cross_sell": 5
+    },
+    "margin_assumption": 0.25,
+    "value_horizon_days": 90,
+    "data": "synthetic, simulated; not real company data"
+  },
+  "risk_model": {
+    "RFM logistic baseline": {
+      "roc_auc": 0.819,
+      "pr_auc": 0.663,
+      "brier": 0.145,
+      "top_decile_lift": 2.863
+    },
+    "Gradient boosting (all features)": {
+      "roc_auc": 0.834,
+      "pr_auc": 0.682,
+      "brier": 0.139,
+      "top_decile_lift": 2.945
+    }
+  },
+  "top_churn_drivers": {
+    "recency_days": 0.229,
+    "orders_60d": 0.0215,
+    "n_verticals_60d": 0.006,
+    "food_orders_60d": 0.0021,
+    "discount_share_60d": 0.0019
+  },
+  "uplift_validation_on_later_rct": [
+    {
+      "action": "discount",
+      "predicted_uplift_third": "low",
+      "predicted": -0.001,
+      "observed": 0.02
+    },
+    {
+      "action": "discount",
+      "predicted_uplift_third": "mid",
+      "predicted": 0.05,
+      "observed": 0.055
+    },
+    {
+      "action": "discount",
+      "predicted_uplift_third": "high",
+      "predicted": 0.138,
+      "observed": 0.088
+    },
+    {
+      "action": "service_recovery",
+      "predicted_uplift_third": "low",
+      "predicted": -0.038,
+      "observed": 0.02
+    },
+    {
+      "action": "service_recovery",
+      "predicted_uplift_third": "mid",
+      "predicted": 0.018,
+      "observed": 0.006
+    },
+    {
+      "action": "service_recovery",
+      "predicted_uplift_third": "high",
+      "predicted": 0.078,
+      "observed": 0.035
+    },
+    {
+      "action": "cross_sell",
+      "predicted_uplift_third": "low",
+      "predicted": -0.026,
+      "observed": 0.036
+    },
+    {
+      "action": "cross_sell",
+      "predicted_uplift_third": "mid",
+      "predicted": 0.029,
+      "observed": 0.031
+    },
+    {
+      "action": "cross_sell",
+      "predicted_uplift_third": "high",
+      "predicted": 0.103,
+      "observed": 0.068
+    }
+  ],
+  "uplift_sanity_checks": {
+    "discount uplift vs hidden price sensitivity (corr)": 0.187,
+    "service-recovery uplift vs late orders in last 28d (corr)": 0.22,
+    "cross-sell uplift: single-vertical minus multi-vertical users": 0.056
+  },
+  "policies": [
+    {
+      "policy": "No action",
+      "churn_rate": 0.279,
+      "spend_per_user_aed": 0.0,
+      "net_value_per_user_aed": 139.228,
+      "incremental_value_per_1k_users_aed": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.0
+    },
+    {
+      "policy": "Discount to everyone",
+      "churn_rate": 0.228,
+      "spend_per_user_aed": 15.0,
+      "net_value_per_user_aed": 129.986,
+      "incremental_value_per_1k_users_aed": -9241.302,
+      "ci_low": -15076.567,
+      "ci_high": -3603.226
+    },
+    {
+      "policy": "Discount to top-30% risk",
+      "churn_rate": 0.259,
+      "spend_per_user_aed": 4.5,
+      "net_value_per_user_aed": 137.175,
+      "incremental_value_per_1k_users_aed": -2052.869,
+      "ci_low": -3264.914,
+      "ci_high": -937.639
+    },
+    {
+      "policy": "Random action",
+      "churn_rate": 0.254,
+      "spend_per_user_aed": 7.495,
+      "net_value_per_user_aed": 134.48,
+      "incremental_value_per_1k_users_aed": -4747.224,
+      "ci_low": -9512.374,
+      "ci_high": -178.314
+    },
+    {
+      "policy": "Uplift policy (this notebook)",
+      "churn_rate": 0.259,
+      "spend_per_user_aed": 3.121,
+      "net_value_per_user_aed": 142.204,
+      "incremental_value_per_1k_users_aed": 2975.995,
+      "ci_low": -1042.721,
+      "ci_high": 7618.418
+    }
+  ],
+  "uplift_policy_action_mix": {
+    "control": 0.596,
+    "cross_sell": 0.256,
+    "service_recovery": 0.077,
+    "discount": 0.072
+  },
+  "ab_test": {
+    "baseline_churn": 0.259,
+    "mde_abs": 0.015,
+    "users_per_arm": 13125
+  }
+}
